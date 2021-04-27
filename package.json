@@ -1,0 +1,15 @@
+{
+  "name": "zjx",
+  "version": "1.0.0",
+  "description": "personal blog",
+  "main": "index.js",
+  "repository": "https://github.com/1360151219/ZJX.git",
+  "author": "1360151219 <1360151219@qq.com>",
+  "license": "MIT",
+  "dependencies": {
+    "docsify-cli": "^4.4.3"
+  },
+  "devDependencies": {
+    "docsify": "^4.12.1"
+  }
+}
