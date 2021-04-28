@@ -6,5 +6,5 @@
     - [内容](AfterSide/README.md)
 
 - 计算机基础
-    - [计算机网络](docs/ComputerNetwork/_sidebar.md)
+    - [计算机网络](docs/ComputerNetwork/Readme.md)
     
