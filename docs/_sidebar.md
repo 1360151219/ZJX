@@ -6,5 +6,10 @@
     - [内容](AfterSide/README.md)
 
 - 计算机基础
-    - [计算机网络](ComputerNetwork/_sidebar.md)
-    
+    - [计算机网络](docs/ComputerNetwork/_sidebar.md)
+      * -[概论](docs/ComputerNetwork/Readme.md)
+      * -[物理层](/)
+      * -[数据链路层](/)
+      * -[运输层](/)
+      * -[网络层](/)
+      * -[应用层](/)
