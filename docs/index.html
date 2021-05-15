@@ -13,13 +13,48 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
     />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css"
+    />
   </head>
+  <style>
+    .to-top {
+      box-sizing: border-box;
+      box-shadow: 0px 0px 10px 1px;
+      border: 3px solid rgb(104, 102, 102);
+      border-radius: 50%;
+      background-color: rgb(5, 250, 189);
+      height: 50px;
+      width: 50px;
+      text-align: center;
+      line-height: 44px;
+    }
+  </style>
   <body>
     <nav>
       <a href="#/">EN</a>
       <a href="#/FrontSide/">前端部分</a>
     </nav>
     <div id="app">请稍等，本博客快要加载不过来了...</div>
+    <a class="to-top">Top &uarr;</a>
+    <script src="https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./totop.js"></script>
+    <script>
+      $(".to-top").toTop({
+        //options with default values
+        autohide: true,
+        offset: 420,
+        speed: 500,
+        position: true,
+        right: 15,
+        bottom: 30,
+      });
+    </script>
     <script>
       window.$docsify = {
         name: "",
@@ -28,9 +63,30 @@
         loadNavbar: true,
         loadSidebar: true,
         subMaxLevel: 4,
+        auto2top: true, //切换页面后是否自动跳转到页面顶部
+        //全文搜索
+        search: {
+          //maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+          paths: "auto",
+          placeholder: "搜索",
+          noData: "找不到结果",
+          // 搜索标题的最大程级, 1 - 6
+          depth: 3,
+        },
+        sidebarDisplayLevel: 2, // set sidebar display level
       };
     </script>
     <!-- Docsify v4 -->
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+    <!-- sidebar-collapse -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
+    <!--全文搜索,直接用官方提供的无法生效-->
+    <script src="https://cdn.bootcss.com/docsify/4.5.9/plugins/search.min.js"></script>
+    <!-- 复制到剪贴板 -->
+    <script src="//unpkg.com/docsify-copy-code"></script>
+    <!-- 图片缩放 -->
+    <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
+    <!-- 字数统计 -->
+    <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
   </body>
 </html>
