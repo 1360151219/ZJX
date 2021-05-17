@@ -4,4 +4,4 @@
 - [前端](FrontSide/VUE.md)
   - [vue](FrontSide/VUE.md)
 - 计算机基础
-  - [计算机网络](ComputerNetwork/Readme.md)
+  - [计算机网络](FundamentalsOfComputer/ComputerNetwork.md)
