@@ -66,6 +66,51 @@ vum create myapp
 
 这里我将会对项目框架作一个基本的介绍，来帮助大家认识 vuecil，以及如何去利用它去进行开发项目。
 
-### src/main.js
+- 首先，*src*文件夹是我们开发项目的一个环境，基本上所有的操作都会在这里进行。
+  - *assets*文件夹存放的是项目的资源。例如图片等。
+  - *components*文件夹存放的是项目的可复用组件。例如各页面都需要的*tabbar*，*navbar*等等。
+  - *router*文件夹是我们整个项目的路由地址，所有的路由操作配置都会在里面进行。
+  - *store*文件夹是我们项目的集中式存储管理应用的所有组件的状态、变量或函数的地方。例如**Vuex**
+  - *views*文件夹是我们项目主要视图存储地方。比如首页。
+  - *main.js*文件是进行引入以及挂载功能的，`Vue-cli`已经帮我们搭建好了，一般不去动它。
+  - *App.vue*是我们整个项目的一个呈现页面。
+
+## Vue 的单组件模式开发 (SFC 模式)
 
 ---
+
+在很多 Vue 项目中，我们使用 `Vue.component` 来定义全局组件，紧接着用 `new Vue({ el: '#container '})` 在每个页面内指定一个容器元素。
+
+这种方式在很多中小规模的项目中运作的很好，在这些项目里 JavaScript 只被用来加强特定的视图。但当在更复杂的项目中，或者你的前端完全由 JavaScript 驱动的时候，下面这些缺点将变得非常明显：
+
+- **全局定义 (Global definitions)** 强制要求每个 component 中的命名不得重复
+- **字符串模板 (String templates)** 缺乏语法高亮，在 HTML 有多行的时候，需要用到丑陋的 \
+- **不支持 CSS (No CSS support)** 意味着当 HTML 和 JavaScript 组件化时，CSS 明显被遗漏
+- **没有构建步骤 (No build step)** 限制只能使用 HTML 和 ES5 JavaScript，而不能使用预处理器，如 Pug (formerly Jade) 和 Babel
+
+?> **但是，文件扩展名为 .vue 的 single-file components (单文件组件) 为以上所有问题提供了解决方法**
+
+我们可以简单的举一个例子,在一个基本的`.vue`文件中
+
+```js,html,css
+<template>
+</template>
+<script>
+export default {
+  data: () => ({
+    //
+  })
+}
+</script>
+<style>
+</style>
+```
+
+现在我们可以获得：
+
+- **完整语法高亮**
+- **CommonJS 模块**
+- **组件作用域的 CSS**
+
+- ?> 同时，我们还可以解决了**css 命名重复**问题。只要在`<style>`中加上`scoped`属性，在渲染的时候会给该组件每一个 dom 元素附上独一无二的`data`属性，从而使各个组件的样式私有化。
+- ?> 我们还可以使用预处理器来编写 css，例如：只需要在`<style>`中加上`lang='scss'`属性，就可以直接使用`scss`语法了。

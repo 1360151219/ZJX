@@ -21,6 +21,11 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/sidebar-folder.min.css"
     />
+    <!-- vuetify -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"
+      rel="stylesheet"
+    />
   </head>
   <style>
     .to-top {
@@ -33,6 +38,9 @@
       width: 50px;
       text-align: center;
       line-height: 44px;
+    }
+    section.cover.has-mask .mask {
+      opacity: 0.1;
     }
   </style>
   <body>
@@ -53,6 +61,10 @@
         position: true,
         right: 15,
         bottom: 30,
+      });
+      new Vue({
+        el: "#app",
+        vuetify: new Vuetify(),
       });
     </script>
     <script>
@@ -88,5 +100,8 @@
     <script src="//unpkg.com/docsify/lib/plugins/zoom-image.js"></script>
     <!-- 字数统计 -->
     <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+    <!-- vuetify -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
   </body>
 </html>
