@@ -114,3 +114,30 @@ export default {
 
 - ?> 同时，我们还可以解决了**css 命名重复**问题。只要在`<style>`中加上`scoped`属性，在渲染的时候会给该组件每一个 dom 元素附上独一无二的`data`属性，从而使各个组件的样式私有化。
 - ?> 我们还可以使用预处理器来编写 css，例如：只需要在`<style>`中加上`lang='scss'`属性，就可以直接使用`scss`语法了。
+
+## 关于跨域
+
+---
+
+?> vue.config.js 是一个可选的配置文件,关于 Vue 项目的配置都在里面进行。
+
+如果你的前端应用和后端 API 服务器没有运行在同一个主机上，你需要在开发环境下将 API 请求代理到 API 服务器。这个问题可以通过 vue.config.js 中的 devServer.proxy 选项来配置。
+
+devServer.proxy 可以是一个指向开发环境 API 服务器的字符串：
+
+```js
+module.exports = {
+  // 选项... 配置完要重启服务器
+  /* 这里是配置反向代理信息 */
+  devServer: {
+    proxy: {
+      "/ajax": {
+        target: "https://m.maoyan.com",
+        changeOrigin: true,
+      },
+    },
+  },
+};
+```
+
+在这里，只要前端请求 ajax 的 url 中匹配到了`/ajax`字符串，就会自动代理成`"https://m.maoyan.com"`
