@@ -23,3 +23,102 @@
 把后端 API 封装好后，我需要做的就是想一个方案来适配移动端设备。因为项目用的是**Vuetify**组件库，所以可以根据`this.$vuetify.breakpoint.mobile`来判断设备。当然，我事先重新对`this.$vuetify.breakpoint.mobileBreakpoint`做了调整。
 
 在开发中，可能因为插件的问题，所以在上传 git 的时候自动将*assets*中的`.sass`文件编译成了`.css`文件。但是在 Vue-Cli 脚手架中是会自动编译的，不需要自己再生成`.css`文件。
+
+## 5.27
+
+---
+
+今天完成了登陆和注册的组件封装。利用学长自己封装的组件**MO2dialog**,我只需要读懂一些属性就 OK 啦。yysy，学长封装的组件感觉很神奇，我看了会源码，不过还是有点地方不懂。
+
+注册 API 需要前端传入加密后的密码，学长说先不做，让后端多封装一个不需要加密的 API。
+
+这天跟学长腾讯会议，主要聊了 Promise 异步，IO 操作，一些 ts 方面问题，（学长懂的东西好多，我感觉自己学的挺少的）以及最最令我开心的，解决了我困扰已久的问题：**Eslint**插件的使用。
+
+在我学 Vue 的时候我就下载了 Eslint 插件，但是一直无法起作用。后来我去网上搜教程，配置了一下，发现有的时候能有用，有的时候又失效了，这里我贴上我的配置代码：
+
+```js
+{
+    "workbench.colorTheme": "Community Material Theme Darker High Contrast",
+    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "explorer.confirmDragAndDrop": false,
+    "editor.fontSize": 20,
+    /* "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    }, */
+    "stylelint.enable": true,
+    "eslint.options": { // 这个配置可以去掉，vscode 会自动找到根目录下的eslint配置文件， 如果配置了，名字必须对上，不然eslint检测不生效
+        "configFile": ".eslintrc.js",
+        "extensions": [".vue"]
+    },
+    "eslint.validate": ["html", "vue", "javascript", "jsx", "typescript"],
+    // "eslint.autoFixOnSave": true,
+    "emmet.syntaxProfiles": {
+        "vue-html": "html",
+        "vue": "html",
+        "typescript": "html"
+    },
+    "editor.wordWrapColumn": 220,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "easysass.formats": [
+        {
+            "format": "expanded",
+            "extension": ".css"
+        },
+        {
+            "format": "compressed",
+            "extension": ".min.css"
+        }
+    ],
+    "files.autoSave": "afterDelay",
+    "php.validate.executablePath": "",
+    "explorer.confirmDelete": false,
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "gitlens.defaultDateFormat": null,
+    "gitlens.defaultDateShortFormat": null,
+    "gitlens.advanced.externalDirectoryDiffTool": "",
+    "git.path": "D://Git//bin//git.exe",
+    "git.autofetch": true,
+    "eslint.runtime": "",
+    "eslint.codeAction.showDocumentation": {
+        "enable": true
+    },
+    "[vue]": {
+
+        "gitlens.codeLens.scopes": [
+            "document"
+        ],
+        "editor.defaultFormatter": "octref.vetur"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+}
+```
+
+后来学长发现，我右下角中 ESLINT 显示一直是个三角形而不是 √，才给我找出了原因所在：我一直都是在 VScode 中的工作区中打开一个大文件夹，然后里面放着各种项目 balabala，但是学长说只有将项目放在工作区首位，**Vetur**和**ESLINT**才可以正常工作。还有，学长说可以在 VScode 设置中搜索*format*，然后把一切的什么`false`弄成`true`,弄了这些之后，我的 ESlint 自动格式化功能终于能正常工作啦。~~~&#x1F308;&#x1F308;
+
+## 5.28
+
+---
+
+今天我根据学长的话，自己提了新 issue：做树洞详情页。我首先想到的就是用动态路由，根据每条树洞的具体 id 来实现。然后再随意加一点 UI 组件，很快的页面整体就完成了。但是在 typescript 方面有一些小问题，类型的问题，还有后端返回数据跟我规定的 type 冲突的问题。我自己摸索了一下发现还是无法搞定，决定等学长有空再请教请教。
+
+## 5.29
+
+---
+
+学长估计出去玩了(手动狗头&#x1F349;)，我就补了补数据结构(学了 js 就感觉只会 js 了)。自己摸索了一下 github：
+
+- 首页的美化
+- commit 的时候可以传入 emoji 表情
+- issue 中的右侧各种功能？
