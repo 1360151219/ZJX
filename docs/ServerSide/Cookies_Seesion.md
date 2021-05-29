@@ -4,13 +4,13 @@
 
 ### 什么是Cookie?
 
-- Cookie 翻译过来是饼干的意思。
+- Cookie翻译过来是饼干的意思。
   
-- Cookie 是服务器通知客户端保存键值对的一种技术。
+- Cookie是服务器通知客户端保存键值对的一种技术。
   
-- 客户端有了Cookie 后，每次请求都发送给服务器。
+- 客户端有了Cookie后，每次请求都发送给服务器。
   
-- 每个Cookie 的大小不能超过4kb
+- 每个Cookie的大小不能超过4kb
 
 ---
 
@@ -19,7 +19,7 @@
 
 我们可以看看一个Cookie的创建过程如下:
 
-![](AfterSide_imgs/13.jpg)
+![](ServerSide_imgs/13.jpg)
 
 ---
 
@@ -31,7 +31,7 @@
 
 其创建过程如下:
 
-![](AfterSide_imgs/14.jpg)
+![](ServerSide_imgs/14.jpg)
 
 ---
 
@@ -57,23 +57,23 @@ cookie.setValue("newValue2");
 ```
 3、调用`response.addCookie()`通知客户端保存修改
 
-区别: 
+>区别: 
 
-- 方案一是创建一个新的同名Cookie来覆盖掉原来Cookie
+>- 方案一是创建一个新的同名Cookie来覆盖掉原来Cookie
 
-- 方案二是直接修改需要修改的Cookie值
+>- 方案二是直接修改需要修改的Cookie值
 
 ---
 
 ### 浏览器查看Cookie
 
-谷歌浏览器查看Cookie
+- 谷歌浏览器查看Cookie
 
-![](AfterSide_imgs/15.jpg)
+![](ServerSide_imgs/15.jpg)
 
-火狐浏览器查看Cookie
+- 火狐浏览器查看Cookie
 
-![](AfterSide_imgs/16.jpg)
+![](ServerSide_imgs/16.jpg)
 
 ---
 
@@ -92,7 +92,7 @@ cookie.setValue("newValue2");
 
 - 其中，Cookie的生命周期可以在浏览器里查看
 
-![](AfterSide_imgs/17.png)
+![](ServerSide_imgs/17.png)
 
 ---
 
@@ -104,7 +104,7 @@ cookie.setValue("newValue2");
 
 - `getContextPath()` ===>>>> 得到工程路径
 
-![](AfterSide_imgs/18.png)
+![](ServerSide_imgs/18.png)
 
 - 代码如下:
 ```java
@@ -117,9 +117,11 @@ cookie.setPath( req.getContextPath() + "/abc" );
 
 ### Cookie验证登录的一个简单流程
 
-![](AfterSide_imgs/19.jpg)
+![](ServerSide_imgs/19.jpg)
 
-## Session会话
+>## Session会话
+
+---
 
 ### 什么是Session 会话?
 
@@ -127,27 +129,27 @@ cookie.setPath( req.getContextPath() + "/abc" );
   
 - Session 就是会话。它是用来维护一个客户端和服务器之间关联的一种技术。
   
-- 每个客户端都有自己的一个Session 会话。
+- 每个客户端都有自己的一个Session会话。
   
-- Session 会话中，我们经常用来保存用户登录之后的信息。
+- Session会话中，我们经常用来保存用户登录之后的信息。
 
 ---
 
 ### 如何创建Session和获取(id号,是否为新)
 
-如何创建和获取Session。它们的API 是一样的。
+如何创建和获取Session。它们的API是一样的。
 
-- `request.getSession()`（单例模式？）
+- `request.getSession()`
 
-第一次调用是：创建Session 会话
+第一次调用是：创建Session会话
   
-之后调用都是：获取前面创建好的Session 会话对象。
+之后调用都是：获取前面创建好的Session会话对象。（单例模式？）
 
 - `isNew()`; 判断到底是不是刚创建出来的（新的）
 
-**true** 表示刚创建
+**true**表示刚创建
 
-**false** 表示获取之前创建
+**false**表示获取之前创建
 
 - `getId()` 得到Session 的会话id 值。
 
@@ -188,4 +190,4 @@ req.getSession().getAttribute("key1");
 
 Session 技术，底层其实是基于Cookie 技术来实现的。
 
-![](AfterSide_imgs/20.jpg)
+![](ServerSide_imgs/20.jpg)
