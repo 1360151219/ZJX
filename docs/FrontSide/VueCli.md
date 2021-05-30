@@ -38,13 +38,13 @@ vum create myapp
 
 你会被提示选取一个 preset。你可以选默认的包含了基本的 Babel + ESLint 设置的 preset，也可以选“手动选择特性”来选取需要的特性。
 
-![vuecli-create](../imgs/vuecli-create1.png)
+![vuecli-create](./imgs/vuecli-create1.png)
 
 这里`myconfig`是我曾经设置过的配置，如果是第一次使用的话，可以根据提示信息一步一步进行自我需求的一个配置或者看[官方网站](https://cli.vuejs.org/zh)。
 
 然后即可创建一个初始的项目框架，目录框架如下：
 
-![vuecli](../imgs/vuecli-pro.png)
+![vuecli](./imgs/vuecli-pro.png)
 
 在`package.json`中我们可以看到：
 

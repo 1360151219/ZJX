@@ -8,14 +8,14 @@
 
 ### 1.声明式渲染
 
-![](../imgs/1.png)
+![](./imgs/1.png)
 
 这里通过创建一个 Vue 实例,el 是声明 Vue 所渲染的元素节点(地盘)，在 Vue 地盘中，我们可以使用变量(为了不混淆我们把它成为状态),此时状态在 data 属性中进行声明。若不声明，则会报错。声明后可以通过 app.message 对状态进行修改，**所有的响应式变化都将会反映在页面上**
 
 ### 2.简单的底层原理
 
 通过原生 JS 中的`Object.defineProperty()`方法，对所有的 Vue 状态进行监听与拦截。
-![](../imgs/2.png)
+![](./imgs/2.png)
 
 ## Vue 的模板语法
 
@@ -376,7 +376,7 @@ let vm = new Vue({
 #### 二、bus 模式(事件总线)
 
 图示：
-![](../imgs/Event-bus.jpg)
+![](./imgs/Event-bus.jpg)
 **即创建一个 bus 组件(空 Vue 实例)，然后对其进行订阅(`$.on`)和发布(`$.emit`)**
 
 #### 三、利用`v-model`实现组件通信
@@ -515,7 +515,7 @@ Vue 提供了`<transition>`的封装组件，在下列情形中，可以给任�
 5. `v-leave-active`：定义离开过渡生效时的状态。在整个离开过渡的阶段中应用，在离开过渡被触发时立刻生效，在过渡/动画完成之后移除。这个类可以被用来定义离开过渡的过程时间，延迟和曲线函数。
 
 6. `v-leave-to`：2.1.8 版及以上定义离开过渡的结束状态。在离开过渡被触发之后下一帧生效 (与此同时 `v-leave` 被删除)，在过渡/动画完成之后移除。
-   ![](../imgs/transition.png)
+   ![](./imgs/transition.png)
 
 对于这些在过渡中切换的类名来说，如果你使用一个没有名字的 `<transition>`，则 `v-` 是这些类名的默认前缀。如果你使用了 `<transition name="my-transition">`，那么 `v-enter` 会替换为 my-transition-enter。
 
@@ -566,9 +566,9 @@ let vm = new Vue({
 
 关于 `Vue` 的元素渲染的原理，先根据数组创建虚拟 `dom` 树，然后由 `diff` 算法来比对新旧虚拟 `dom` 树，若 `dom` 标签没有
 变化的时候，为了效率只会替换相同标签内部的内容，就会有可能达不到我们想要的过渡效果。因此我们必须要通过 key 来标记以让 `Vue` 去区别他们。
-![](../imgs/render-theory.png)
-![](../imgs/render-theory-second.png)
-![](../imgs/render-theory-third.png)
+![](./imgs/render-theory.png)
+![](./imgs/render-theory-second.png)
+![](./imgs/render-theory-third.png)
 
 实例：
 
@@ -657,7 +657,7 @@ Vue 中组件以及 vm 实例都有着它们自己的生命周期，一共有 8 
 
 为了更好的理解生命周期的各个阶段，这里引入官方文档中的一张图
 
-![](../imgs/lifecycle.png)
+![](./imgs/lifecycle.png)
 
 ## Vue 自定义指令
 
