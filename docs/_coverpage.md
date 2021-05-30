@@ -7,4 +7,4 @@
 [GitHub](https://github.com/1360151219/ZJX.git)
 [开始阅读](README.md)
 
-![](./imgs/coverpage.gif)
+![](./FrontSide/imgs/coverpage.gif)
