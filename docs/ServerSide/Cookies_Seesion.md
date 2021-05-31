@@ -182,12 +182,12 @@ req.getSession().getAttribute("key1");
   
 - `session.invalidate()` 让当前Session 会话马上超时无效。
 
-!>Session 默认的超时时间长为30 分钟。
+!>Session 默认的超时时间长为30分钟。
 
 ---
 
 ### 浏览器和Session关联的内幕
 
-Session 技术，底层其实是基于Cookie 技术来实现的。
+Session技术，底层其实是基于Cookie 技术来实现的。
 
 ![](ServerSide_imgs/20.jpg)
