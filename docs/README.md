@@ -26,7 +26,15 @@
 
 - 在新分支写完代码后，`add`、`commit`、`push`三部曲。
 
-  !> 注意：commit 的时候写清楚自己做了什么
+此时，如果团队成员已经改了远端仓库，就需先
+
+> `git checkout master` // 切换到 master
+> `git pull origin master` // 拉取远端分支以获取最新内容
+> `git checkout test` // 切换到自己的分支
+> `git rebase master` --------①
+> 或者 `git merge master` ----------②
+
+!> 注意：commit 的时候写清楚自己做了什么
 
 - 然后在 github 上请求合并 `pull request`
 
