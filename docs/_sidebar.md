@@ -3,4 +3,6 @@
   - [随笔](FrontSide/Proj-essay.md)
   - [数据结构与算法](FrontSide/dataStructures&algorithms.md)
 - [后端](ServerSide/Servlet.md)
+  - [Web技术](ServerSide/Servlet.md)
+  - [学习随笔](ServerSide/Study_essay.md)
 - [计算机基础](FundamentalsOfComputer/ComputerNetwork.md)

@@ -19,7 +19,7 @@
 
 我们可以看看一个Cookie的创建过程如下:
 
-![](ServerSide_imgs/13.jpg)
+![](./Web_imgs/13.jpg)
 
 ---
 
@@ -31,7 +31,7 @@
 
 其创建过程如下:
 
-![](ServerSide_imgs/14.jpg)
+![](./Web_imgs/14.jpg)
 
 ---
 
@@ -69,11 +69,11 @@ cookie.setValue("newValue2");
 
 - 谷歌浏览器查看Cookie
 
-![](ServerSide_imgs/15.jpg)
+![](./Web_imgs/15.jpg)
 
 - 火狐浏览器查看Cookie
 
-![](ServerSide_imgs/16.jpg)
+![](./Web_imgs/16.jpg)
 
 ---
 
@@ -92,7 +92,7 @@ cookie.setValue("newValue2");
 
 - 其中，Cookie的生命周期可以在浏览器里查看
 
-![](ServerSide_imgs/17.png)
+![](./Web_imgs/17.png)
 
 ---
 
@@ -104,7 +104,7 @@ cookie.setValue("newValue2");
 
 - `getContextPath()` ===>>>> 得到工程路径
 
-![](ServerSide_imgs/18.png)
+![](./Web_imgs/18.png)
 
 - 代码如下:
 ```java
@@ -117,7 +117,7 @@ cookie.setPath( req.getContextPath() + "/abc" );
 
 ### Cookie验证登录的一个简单流程
 
-![](ServerSide_imgs/19.jpg)
+![](./Web_imgs/19.jpg)
 
 >## Session会话
 
@@ -190,4 +190,4 @@ req.getSession().getAttribute("key1");
 
 Session技术，底层其实是基于Cookie 技术来实现的。
 
-![](ServerSide_imgs/20.jpg)
+![](./Web_imgs/20.jpg)
