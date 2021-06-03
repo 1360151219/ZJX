@@ -1,4 +1,4 @@
-## Cookie 121212
+## Cookie
 
 ### 什么是 Cookie?
 
