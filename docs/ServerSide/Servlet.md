@@ -71,7 +71,7 @@ public class HelloServlet implements Servlet {
 
 ### url 地址到 Servlet 程序的访问
 
-![](ServerSide_imgs/2.jpg)
+![](./Web_imgs/2.jpg)
 
 ---
 
@@ -173,7 +173,7 @@ public class HelloServlet2 extends HttpServlet {
 
 ### Servlet 类的继承体系
 
-![](ServerSide_imgs/3.jpg)
+![](./Web_imgs/3.jpg)
 
 
 >## ServletConfig 类
@@ -253,7 +253,7 @@ public void init(ServletConfig servletConfig) throws ServletException {
 ```
 **注意点**
 
-![](ServerSide_imgs/4.jpg)
+![](./Web_imgs/4.jpg)
 
 >## ServletContext 类
 
@@ -276,7 +276,7 @@ public void init(ServletConfig servletConfig) throws ServletException {
 
 这里的域指的是存取数据的操作范围，整个web 工程。
 
-![](ServerSide_imgs/5.png)
+![](./Web_imgs/5.png)
 
 ---
 
@@ -336,8 +336,8 @@ web.xml里的配置
 
 服务器端结果
 
-![](ServerSide_imgs/6.png)
-![](ServerSide_imgs/7.png)
+![](./Web_imgs/6.png)
+![](./Web_imgs/7.png)
 
 
 >## HttpServletRequest类
@@ -380,7 +380,7 @@ web.xml里的配置
 
 **请求转发**是指，服务器收到请求后，从一次资源跳转到另一个资源的操作。
 
-![](ServerSide_imgs/8.png)
+![](./Web_imgs/8.png)
 
 
 >## HttpServletResponse类
@@ -420,7 +420,7 @@ public class ResponseIOServlet extends HttpServlet {
   }
 }
 ```
-![](ServerSide_imgs/11.png)
+![](./Web_imgs/11.png)
 
 
 ### 响应的乱码解决
@@ -461,7 +461,7 @@ public class ResponseIOServlet extends HttpServlet {
 
 此时访问浏览器会发现
 
-![](ServerSide_imgs/12.png)
+![](./Web_imgs/12.png)
 
 **"国哥真的帅呀！"**显示出来了!
 
@@ -470,8 +470,8 @@ public class ResponseIOServlet extends HttpServlet {
 **请求重定向**，是指客户端给服务器发请求，然后服务器告诉客户端说。我给你一些地址。你去新地址访问。
 叫请求重定向（因为之前的地址可能已经被废弃）
 
-![](ServerSide_imgs/9.png)
+![](./Web_imgs/9.png)
 
 实现代码如下:
 
-![](ServerSide_imgs/10.png)
+![](./Web_imgs/10.png)
