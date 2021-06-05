@@ -188,3 +188,23 @@ ts 的小问题：复合类型赋值报错
 ---
 
 今天早上做了树洞详情页中的点赞、切换排序、收藏功能。然后由于后端浏览器安全策略的问题，给评论点赞的功能暂时做不了，搁置一波。
+
+晚上弄好了底部导航栏的样式，明天可以加入发树洞功能啦。
+
+## 6.5
+
+---
+
+今天解决了关于 ts 困扰已久的两个问题：
+
+- 当在`.vue`文件，为变量附上类型时，有时候会以下错误：
+  `Type annotations can only be used in TypeScript files.Vetur(8010)`
+
+?> 解决方法：**在`<script>`中加上`lang="ts"`**
+
+- 当在`.vue`文件，引用$refs 有时候会以下错误：
+  `Property 'editor' does not exist on type 'Vue'.Vetur(2339)`
+
+?> 解决方法：**附上`$refs: { [key: string]: any; };`**
+
+然后完成了添加评论的功能以及解析 HTML 的功能。现在树洞基本上支持`markdown`格式的输入与输出啦。
