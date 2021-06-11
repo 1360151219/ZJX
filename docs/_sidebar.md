@@ -5,4 +5,4 @@
 - [后端](ServerSide/Servlet.md)
   - [Web技术](ServerSide/Servlet.md)
   - [学习随笔](ServerSide/Study_essay.md)
-- [计算机基础](FundamentalsOfComputer/ComputerNetwork.md)
+- [网络](FundamentalsOfComputer/Network.md)
