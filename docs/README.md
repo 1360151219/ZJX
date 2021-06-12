@@ -11,7 +11,7 @@
   - [数据结构与算法](FrontSide/dataStructures&algorithms.md)
   - [开发随笔](FrontSide/Proj-essay.md)
 - [后端](ServerSide/Servlet.md)
-- [计算机基础](FundamentalsOfComputer/ComputerNetwork.md)
+- [计算机基础](docs/FundamentalsOfComputer/Network.md)
 
 # 开发规范
 
