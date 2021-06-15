@@ -1,6 +1,6 @@
 # Filter
 
->## 什么是Filter过滤器
+## 什么是Filter过滤器
 
 - Filter过滤器它是JavaWeb的三大组件之一。 三大组件分别是：**Servlet**程序、**Listener**监听器、**Filter**过滤器
 
