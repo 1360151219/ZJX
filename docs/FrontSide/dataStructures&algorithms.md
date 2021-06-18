@@ -130,6 +130,7 @@ function passGame(nameList, num) {
   }
   while (queue.size() > 1) {
     for (let i = 0; i < num - 1; i++) {
+      /* 把队列头部的元素放在尾部，这样就算num大于队列长度也不会出错*/
       queue.enqueue(queue.dequeue());
     }
     queue.dequeue();
@@ -221,3 +222,131 @@ export class PriorityQueue extends Queue {
 ```
 
 ![数组、栈和队列图解](https://cdn.jsdelivr.net/gh/XPoet/image-hosting@master/JavaScript-数据结构与算法/image.64kg5ej56vk0.png)
+
+## 链表
+
+---
+
+### 单向链表
+
+> 单向链表是由一个一个节点链接而成的，链表只可以从 **head** 开始遍历。链表元素在内存中不必是连续的空间，因此可以实现内存动态管理；它的长度可以无限延申；插入以及删除元素的效率高
+
+> **节点的封装**：
+
+```js
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+```
+
+**单向链表的封装**:
+
+```js
+class LinkedList {
+  constructor() {
+    this.length = 0;
+    this.head = null;
+  }
+  /* 方法 */
+  append(data) {
+    let newNode = new Node(data);
+    if (!this.head) {
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
+    }
+    this.length++;
+  }
+  insert(position, data) {
+    let newNode = new Node(data);
+    if (position < 0 || position > this.length - 1) return false;
+    if (position === 0) {
+      newNode.next = this.head;
+      this.head = newNode;
+    } else {
+      let index = 0;
+      let current = this.head;
+      let prev = null;
+      while (index++ < position) {
+        prev = current;
+        current = current.next;
+      }
+      newNode.next = current;
+      prev.next = newNode;
+    }
+    this.length++;
+    return true;
+  }
+  get(position) {
+    let index = 0;
+    let current = this.head;
+    if (position < 0 || position > this.length - 1) return null;
+    while (index++ < position) {
+      current = current.next;
+    }
+    return current;
+  }
+  indexOf(data) {
+    if (!this.head) return -1;
+    let current = this.head;
+    let index = 0;
+    while (current) {
+      if (current.data === data) {
+        return index;
+      }
+      current = current.next;
+      index++;
+    }
+    return -1;
+  }
+  removeAt(position) {
+    if (position < 0 || position > this.length - 1) return null;
+    let index = 0;
+    let current = this.head;
+    let prev = null;
+    if (position === 0) {
+      this.head = current.next;
+    } else {
+      while (index++ < position) {
+        prev = current;
+        current = current.next;
+      }
+      prev.next = current.next;
+      current.next = null;
+    }
+    this.length--;
+    return current.data;
+  }
+  update(position, data) {
+    let res = this.removeAt(position);
+    this.insert(position, data);
+    return res;
+  }
+  remove(data) {
+    const index = this.indexOf(data);
+    if (index === -1) return;
+    this.removeAt(index);
+  }
+  isEmpty() {
+    return this.length === 0 ? true : false;
+  }
+  size() {
+    return this.length;
+  }
+}
+```
+
+- `append()`: 在链表尾部插入节点。
+- `insert()`：找到位置索引，引入当前节点和上一位节点，先将新节点指向当前节点，再断开上一位的链接，并指向新节点。
+- `removeAt()`：找到位置索引，引入当前节点和上一位节点，先将上一位节点指向当前节点的后一位节点，再将当前节点指向 NULL，此时当前节点就断开了与链表的链接，会被自动清除内存空间。
+
+### 双向链表
+
+> 双向链表与单向链表最大的不同，就是每个节点还有一个 prev 指针，指向前一个节点。首节点的 prev 以及未节点的 next 为 null。链表除了 head 以外，还有一个 tail 指向尾节点
