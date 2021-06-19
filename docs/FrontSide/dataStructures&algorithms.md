@@ -266,7 +266,7 @@ class LinkedList {
   }
   insert(position, data) {
     let newNode = new Node(data);
-    if (position < 0 || position > this.length - 1) return false;
+    if (position < 0 || position > this.length) return false;
     if (position === 0) {
       newNode.next = this.head;
       this.head = newNode;
@@ -350,3 +350,145 @@ class LinkedList {
 ### 双向链表
 
 > 双向链表与单向链表最大的不同，就是每个节点还有一个 prev 指针，指向前一个节点。首节点的 prev 以及未节点的 next 为 null。链表除了 head 以外，还有一个 tail 指向尾节点
+
+我们可以使用继承来实现双向链表的封装：
+
+```js
+class DoubleNode extends Node {
+  constructor(data) {
+    super(data);
+    this.prev = null;
+  }
+}
+```
+
+```js
+export class DoublyLinkedList extends LinkedList {
+  constructor() {
+    super();
+    this.tail = null;
+  }
+}
+```
+
+然后让我们用 JavaScript 来实现双向链表的各种方法吧！
+
+- `append` 添加元素
+
+!> 这里要注意节点的 next 和 prev 的指向
+
+```js
+append(data) {
+        const newNode = new DoubleNode(data)
+        if (!this.head) {
+            this.head = newNode
+            this.tail = newNode
+        } else {
+            this.tail.next = newNode
+            newNode.prev = this.tail
+            this.tail = newNode
+        }
+        this.length++
+    }
+```
+
+- `insert` 插入元素
+
+!> 这里要注意插入节点的时候，前后两个节点的 next 和 prev 的指向
+
+```js
+insert(position, data) {
+        if (position < 0 || position > this.length) return false
+        const newNode = new DoubleNode(data)
+        /* 特殊情况 */
+        if (position === 0) {
+          if(!this.head){
+            this.head = newNode
+            this.tail = newNode
+          }else{
+            this.head.prev = newNode
+            newNode.next = this.head
+            this.head = newNode
+          }
+        } else if (position === this.length) {
+            this.tail.next = newNode
+            newNode.prev = this.tail
+            this.tail = newNode
+        } else {
+            let current = this.head
+            let prevnode = null
+            let index = 0
+            while (index++ < position) {
+                prevnode = current
+                current = current.next
+            }
+            /* 这里注意有4个指针需要断开重连 */
+            current.prev = newNode
+            newNode.next = current
+            newNode.prev = prevnode
+            prevnode.next = newNode
+        }
+        this.length++
+        return true
+}
+```
+
+- `removeAt` 删除元素
+
+```js
+removeAt(position) {
+        if (position < 0 || position > this.length - 1) return false
+        if (position === 0) {
+            if (this.length === 1) {
+                this.head = null
+                this.tail = null
+            } else {
+                this.head.next.prev = null
+                this.head = this.head.next
+            }
+        } else if (position === this.length - 1) {
+            this.tail = this.tail.prev
+            this.tail.next = null
+        } else {
+            let index = 0
+            let current = this.head
+            let prevnode = null
+            if (index++ < position) {
+                prevnode = current
+                current = current.next
+            }
+            prevnode.next = current.next
+            current.next.prev = prevnode
+            /* current.next = null
+            current.prev = null */
+        }
+        this.length--
+        return true
+    }
+
+```
+
+- 顺序倒序输出字符串
+
+```js
+/*  链表数据从后往前以字符串形式返回 */
+    backwardString() {
+        let current = this.tail
+        let str = ''
+        while (current) {
+            str += current.data + '---'
+            current = current.prev
+        }
+        return str
+    }
+    /*  链表数据从前往后以字符串形式返回 */
+    forwardToString() {
+        let current = this.head
+        let str = ''
+        while (current) {
+            str += current.data + '---'
+            current = current.next
+        }
+        return str
+    }
+```
