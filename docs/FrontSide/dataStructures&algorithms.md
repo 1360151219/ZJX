@@ -574,3 +574,83 @@ removeAt(position) {
 - `stepSize = constant - （key % constant）`；
   其中 constant 是质数，且小于数组的容量；
   例如：`stepSize = 5 - （key % 5）`，满足需求，并且结果不可能为 0；
+
+### 哈希函数
+
+哈希表的优势在于它的速度，所以哈希函数不能采用消耗性能较高的复杂算法。提高速度的一个方法是在哈希函数中尽量减少乘法和除法。
+
+性能高的哈希函数应具备以下两个优点：
+
+- 快速的计算；
+- 均匀的分布；
+
+霍纳法则：在中国霍纳法则也叫做秦久韶算法，这种算法是最优选。
+
+![](imgs/Hash3.jpg)
+
+这种算法是时间复杂度只有 O(n)。下面我们来实现一个简单的哈希函数:
+
+```js
+function hashFn(str, limit) {
+  const prime = 11; //自己定义一个质数
+  let hashCode = 0;
+  /* 秦久韶算法 */
+  for (let i = 0; i < str.length; i++) {
+    hashCode = hashCode * prime + str.charCodeAt(i);
+  }
+  return hashCode % limit;
+}
+```
+
+### 哈希表的封装
+
+```js
+export class HashTable {
+  constructor() {
+    this.storage = [];
+    this.count = 0; /* 存放的元素个数 */
+    this.limit = 11; /* 哈希表长度 */
+  }
+  /* 哈希函数 */
+  hashFn(str, limit) {
+    const prime = 11; //自己定义一个质数
+    let hashCode = 0;
+    /* 秦久韶算法 */
+    for (let i = 0; i < str.length; i++) {
+      hashCode = hashCode * prime + str.charCodeAt(i);
+    }
+    return hashCode % limit;
+  }
+}
+```
+
+接下来我们来实现一些哈希表的方法：
+
+- **放入/修改**
+
+> 主要思想：先获取 hashCode；然后判断该下标下 bucket 有无存值，无则创建，有则遍历该 bucket；判断是否有重复的 key，有则修改；若没有重复的 key，则直接 push [key,value] ; 最后长度增加
+
+```js
+/* 放入元素（修改） */
+  put(key, value) {
+    const index = this.hashFn(key, this.limit);
+    let bucket = this.storage[index];
+    /* 不存在就创建 */
+    if (bucket === undefined) {
+      bucket = [];
+      this.storage[index] = bucket;
+    }
+    let isChange = false;
+    for (let i = 0; i < bucket.length; i++) {
+      let tuple = bucket[i];
+      if (tuple[0] === key) {
+        tuple[1] = value;
+        isChange = true;
+      }
+    }
+    if (!isChange) {
+      bucket.push([key, value]);
+      this.count++;
+    }
+  }
+```
