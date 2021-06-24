@@ -604,6 +604,9 @@ function hashFn(str, limit) {
 
 ### 哈希表的封装
 
+首先，我将建立一个如下图的哈希表结构：
+![](./imgs/hash4.jpg)
+
 ```js
 export class HashTable {
   constructor() {
@@ -653,4 +656,117 @@ export class HashTable {
       this.count++;
     }
   }
+```
+
+- **获取值**
+
+> 主要思想：同上。
+
+```js
+get(key) {
+    let index = this.hashFn(key, this.limit)
+    let bucket = this.storage[index]
+    if (!bucket) {
+      return null
+    } else {
+      for (let i = 0; i < bucket.length; i++) {
+        let tuple = bucket[i]
+        if (tuple[0] === key) return tuple[1]
+      }
+    }
+    return null
+  }
+```
+
+- **删除元组**
+
+```js
+/* 删除键值对tuple */
+  remove(key) {
+    const index = this.hashFn(key, this.limit)
+    let bucket = this.storage[index]
+    if (!bucket) return false
+    else {
+      for (let i = 0; i < bucket.length; i++) {
+        let tuple = bucket[i]
+        if (tuple[0] === key) {
+          bucket.splice(i, 1)
+          this.count--
+          return tuple[1]
+        }
+      }
+    }
+    return false
+  }
+```
+
+- **是否为空** / **获取长度**
+
+- **哈希表的扩容**
+
+> 由于使用的是链地址法，装填因子(loadFactor)可以大于 1，所以这个哈希表可以无限制地插入新数据。但是，随着数据量的增多，storage 中每一个 index 对应的 bucket 数组（链表）就会越来越长，这就会造成哈希表效率的降低。
+
+在 java 的源码中，当`loadFactor > 0.75 `的时候会进行扩容操作
+
+> 主要思路：首先记录下旧的哈希表，然后重置哈希表，并赋予新的 limit（哈希表长度）。然后对旧的表进行遍历，将里面的元组用 put 方法重新加入到新的表中
+
+```js
+/* 哈希表的扩容 */
+  resize(newLimit) {
+    const oldStorage = this.storage
+    this.storage = []
+    this.count = 0
+    this.limit = newLimit
+    for (let i = 0; i < oldStorage.length; i++) {
+      let bucket = oldStorage[i]
+      if (bucket) {
+        for (let j = 0; j < bucket.length; j++) {
+          let tuple = bucket[j]
+          this.put(tuple[0], tuple[1])
+          this.count++
+        }
+      }
+    }
+  }
+```
+
+为了使得扩容之后 limit 为质数，我们还需要 2 个函数：
+
+```js
+/* 质数的判断 */
+  isPrime(num) {
+    if (num < 1) return false
+    let temp = Math.floor(Math.sqrt(num))
+    for (let i = 2; i <= temp; i++) {
+      if (num % i === 0) {
+        return false
+      }
+    }
+    return true
+  }
+  /* 获取质数 */
+  getPrime(num) {
+    while (!this.isPrime(num)) {
+      num++
+    }
+    return num
+  }
+```
+
+当然了，我们需要在 (**put**中) 添加元素的时候加入该功能：
+
+```js
+/* 扩容 */
+if (this.count / this.limit > 0.75) {
+  this.resize(this.getPrime(this.limit * 2));
+}
+```
+
+除了扩容，当删除元素的时候，我们也可以进行缩容：
+
+```js
+/* 缩容 */
+if (this.limit > 8 && this.count / this.limit < 0.25) {
+  this.resize(this.getPrime(Math.floor(this.limit / 2)));
+}
 ```
