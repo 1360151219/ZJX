@@ -889,3 +889,274 @@ class Node {
 
 ![](./imgs/tree6.jpg)
 
+**代码实现：**
+
+_Node 节点类：_
+
+```js
+class Node {
+  constructor(key) {
+    this.key = key;
+    this.left = null;
+    this.right = null;
+  }
+}
+```
+
+_BinarySearchTree 类：_
+
+```js
+class BinarySearchTree {
+  constructor() {
+    this.root = null;
+  }
+}
+```
+
+_方法：_
+
+- **插入操作：**
+
+> 这里的插入操作思路，首先得判断是否为空树，然后依次比较节点与插入节点值的大小，然后进行左右节点的再比较。
+> 因为节点的每一个节点也是一个子树，所以我用了递归算法。
+
+```js
+/* 递归操作 */
+ recursionInsert(node, newNode) {
+    if (node.key < newNode.key) {
+      if (!node.right) {
+        node.right = newNode
+      } else {
+        this.recursionInsert(node.right, newNode)
+      }
+    } else {
+      if (!node.left) {
+        node.left = newNode
+      } else {
+        this.recursionInsert(node.left, newNode)
+      }
+    }
+  }
+  /* 插入操作 */
+  insert(key) {
+    let newNode = new Node(key)
+    if (this.root === null) {
+      this.root = newNode
+    } else {
+      this.recursionInsert(this.root, newNode)
+    }
+  }
+```
+
+- **树的遍历**
+
+所有的二叉树都有 3 种遍历方式：
+
+- 先序遍历
+- 中序遍历
+- 后序遍历
+
+> 以遍历根（父）节点的顺序来区分三种遍历方式。比如：先序遍历先遍历根节点、中序遍历第二遍历根节点、后续遍历最后遍历根节点。
+
+- **先序遍历**
+
+**从根节点开始，先遍历所有左子树，后遍历右子树**
+
+> 代码思路：从根节点开始，通过递归不断遍历左子树，直至空节点时，返回至上一次递归，执行遍历右子树，直至空节点时，返回至上一次递归。上一次递归左右都遍历完之后，再返回上上次递归，依次类推，直至最开始的递归完成。
+
+```js
+/* 先序遍历 */
+  preOrderTraverse() {
+    let result = []
+    this.recursionPreOrder(this.root, result)
+    return result
+  }
+  recursionPreOrder(node, res) {
+    if (node === null) return res
+    res.push(node.key)
+    this.recursionPreOrder(node.left, res)
+    this.recursionPreOrder(node.right, res)
+  }
+```
+
+- **中序遍历**
+
+**先遍历左子树，再遍历其父节点，后遍历右子树**
+
+> 代码思路：将访问数据的步骤放在遍历左子树之后，打印出来的是**顺序序列**
+
+```js
+/* 中序遍历 */
+  midOrderTraverse() {
+    let result = []
+    this.recursionMidOrder(this.root, result)
+    return result
+  }
+  recursionMidOrder(node, res) {
+    if (node === null) return res
+    this.recursionMidOrder(node.left, res)
+    res.push(node.key)
+    this.recursionMidOrder(node.right, res)
+  }
+```
+
+![](imgs/tree7.jpg)
+
+- **后序遍历**
+
+**从最底层左子树开始，先遍历左子树，后遍历右子树，再遍历它们的父节点**
+
+> 代码思路：将访问数据的步骤放在遍历完左、右子树之后
+
+```js
+/* 后序遍历 */
+postOrderTraverse() {
+let result = []
+this.recursionPostOrder(this.root, result)
+return result
+}
+recursionPostOrder(node, res) {
+if (node === null) return res
+this.recursionPostOrder(node.left, res)
+this.recursionPostOrder(node.right, res)
+res.push(node.key)
+}
+```
+
+![](imgs/tree8.jpg)
+
+- **树的最小值和最大值**
+
+由于搜索二叉树的特性，我们很容易就可以知道，最小值和最大值分别位于树的最深层的最左端和最右端。因此我们之前通过循环一直遍历左边或右边即可
+
+```js
+/* 最小值与最大值 */
+  min() {
+    if (this.root === null) return null
+    let node = this.root
+    while (node.left) {
+      node = node.left
+    }
+    return node.key
+  }
+  max() {
+    if (this.root === null) return null
+    let node = this.root
+    while (node.right) {
+      node = node.right
+    }
+    return node.key
+  }
+```
+
+- **搜索特定值**
+
+> 利用递归，不断比较节点值与特定值的大小，然后在其左子树或右子树里面去寻找
+
+```js
+search(key) {
+    return this.recursionSearch(this.root, key)
+  }
+  recursionSearch(node, key) {
+    if (node === null) return false
+    if (key > node.key) {
+      return this.recursionSearch(node.right, key)
+    } else if (key < node.key) {
+      return this.recursionSearch(node.left, key)
+    } else {
+      return true
+    }
+  }
+```
+
+- **删除节点**
+
+这个删除操作是最为复杂的一个操作。下面我们先放代码：
+
+```js
+/* 删除操作（最复杂） */
+  remove(key) {
+    /* 先找到需要删除的节点以及其父节点 */
+    let current = this.root
+    let parent = null
+    let isLeft = false
+    while (current.key !== key) {
+      parent = current
+      if (current.key < key) {
+        isLeft = false
+        current = current.right
+      } else {
+        isLeft = true
+        current = current.left
+      }
+    }
+    if (current === null) return false
+    /* 开始执行删除操作 */
+    /* 第一种情况：删除节点为叶节点 */
+    if (current.left === null && current.right === null) {
+      if (current === this.root) {
+        this.root = null
+      } else if (isLeft) {
+        parent.left = null
+      } else {
+        parent.right = null
+      }
+    } else if (current.right === null) {
+      /* 第二种情况： 删除节点的度为1 */
+      if (current === this.root) {
+        this.root = current.left
+      } else if (isLeft) {
+        parent.left = current.left
+      } else {
+        parent.right = current.left
+      }
+    } else if (current.left === null) {
+      if (current === this.root) {
+        this.root = current.left
+      } else if (isLeft) {
+        parent.left = current.right
+      } else {
+        parent.right = current.right
+      }
+    } else {
+      /* 第三种情况：删除节点的度为2，这里只找后继 */
+      let successor = this.getSuccessor(current)
+      if (this.root === current) {
+        this.root = successor
+      } else if (isLeft) {
+        parent.left = successor
+      } else {
+        parent.right = successor
+      }
+      successor.left = current.left
+    }
+    return current
+  }
+  /* 寻找后继 */
+  getSuccessor(delnode) {
+    let successor = delnode.right
+    let successorParent = delnode
+    while (successor.left) {
+      successorParent = successor
+      successor = successor.left
+    }
+    /* 如果是的话，就只需要将delnode替换成successor就可以了，不需要以下操作 */
+    if (successor !== delnode.right) {
+      successorParent.left = successor.right
+      successor.right = delnode.right
+    }
+    return successor
+  }
+```
+
+**思路分析**
+
+> 首先先通过遍历找到符合的节点
+> 下面分**三种情况**进行删除操作：
+>
+> 1. 当删除节点为叶节点的时候，首先判断为根节点的时候，直接删除根节点；然后直接根据 isLeft 通过删除 parent 的指针来删除该节点。
+> 2. 当删除节点的度为 1 时，首先判断为根节点的时候，直接将根节点指向其子节点；然后将 parent 的指针直接指向删除节点的下一个节点
+> 3. 当删除节点的度为 2 时，我们首先要知道一件事情，就是删除节点后，应该用哪个节点来代替呢？其实答案就是，current 左子树中比 current 小一点点的节点，即 current 左子树中的最大值，称为**前驱**；
+>    current 右子树中比 current 大一点点的节点，即 current 右子树中的最小值，称为**后继**；我们上述代码就是考虑后继的情况。那么首先封装一个函数 getSuccessor 来获取后继节点。我们要考虑一种特殊情况：当后继是删除节点的右子节点时，就类似上述情况一样，将 parent 的指针直接指向删除节点的右子节点(即后继),这是一种通用的步骤，所以我把它放在了 successor 函数之外。除此之外，我们可以在 successor 函数内部，进行下图中 ① ② 的操作，最后根据 isLeft 链接 parent 指针，即 ③ 操作步骤
+
+![](imgs/tree9.jpg)
