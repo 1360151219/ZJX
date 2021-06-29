@@ -2,6 +2,7 @@
 - [Vue-Cli](FrontSide/VueCli.md)
 - [Vue-Router](FrontSide/VueRouter.md)
 - [数据结构与算法](FrontSide/dataStructures&algorithms.md)
+- [刷题日记](FrontSide/algorithm.md)
 - [开发随笔](FrontSide/Proj-essay.md)
 - **JavaScript 相关**
   - [事件循环](FrontSide/eventloop.md)

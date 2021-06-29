@@ -9,7 +9,9 @@
   - [Vue 基础](FrontSide/VUE.md)
   - [Vue-Cli](FrontSide/VueCli.md)
   - [Vue-Router](FrontSide/VueRouter.md)
-  - [数据结构与算法](FrontSide/dataStructures&algorithms.md)
+  - 数据结构和算法
+    - [数据结构与算法](FrontSide/dataStructures&algorithms.md)
+    - [刷题日记](FrontSide/algorithm.md)
   - [开发随笔](FrontSide/Proj-essay.md)
 
 - **一些关于前端各种问题的思考文章：**
