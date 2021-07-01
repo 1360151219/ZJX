@@ -1183,7 +1183,7 @@ search(key) {
 - 性质 1. 结点是红色或黑色。
 - 性质 2. 根结点是黑色。
 - 性质 3. 所有叶子都是黑色。（叶子是 NIL 结点）
-- 性质 4. 每个红色结点的两个子结点都是黑色。（从每个叶子到根的所有路径上不能有两个连续的红色结点）
+- 性质 4. 每个红色结点的两个子结点都是黑色。（**从每个叶子到根的所有路径上不能有两个连续的红色结点**）
 - 性质 5. 从任一节结点其每个叶子的所有路径都包含相同数目的黑色结点。
 
 ![](imgs/tree11.jpg)
@@ -1205,3 +1205,85 @@ search(key) {
 ![](imgs/BRtree1.jpg)
 
 ![](imgs/BRtree2.jpg)
+
+- **左旋转和右旋转**
+
+![](imgs/BRtree3.jpg)
+![](imgs/BRtree4.jpg)
+
+如上图，左旋转即逆时针，右旋转即顺时针。我以右旋转为例子：
+
+- E M 子树 3 顺时针旋转，则 E 为父节点，M 为子节点，而子树 3 变成了（右）孙子节点，同时原本 E 下面的右子节点向右平移变成了 M 的左子节点。
+
+下面我们通过这 3 种变换，来总结出红黑树的 5 种变形规则：
+
+**变形规则**
+
+1. 当插入一个空树的时候，我们将一个红色新节点插入，然后变色。
+
+2. 当父节点是黑色节点的时候，直接将红色新节点插入即可。
+
+3. 当父节点是红色，叔叔节点是红色而爷爷为黑色，这时候红色新节点插入后，同时将父节点、叔叔以及爷爷变色即可。
+
+![](imgs/BRtree5.jpg)
+
+4. 当父节点是红色，叔叔节点和爷爷是黑色，且插入位置在左边的时候，这时候我们要将父和爷爷节点变色，然后进行一个右旋转。
+
+![](imgs/BRtree6.jpg)
+
+5. 当父节点是红色，叔叔节点和爷爷是黑色，且插入位置在右边的时候，这时候将以父节点为轴进行左旋转，这时候就跟情况 4 一样了。
+
+![](imgs/BRtree7.jpg)
+
+说了这么多，我们来实现一下红黑树中插入节点的代码吧！
+
+首先是红黑树的节点，比普通的二叉树多了颜色属性：
+
+**Node 节点类：**
+
+```js
+const RED = true;
+const BLACK = false;
+class Node {
+  constructor(key) {
+    this.key = key;
+    this.left = null;
+    this.right = null;
+    this.color = RED;
+    this.flipColor = function () {
+      if (this.color === RED) {
+        this.color = BLACK;
+      } else {
+        this.color = RED;
+      }
+    };
+  }
+}
+```
+
+**红黑树：**
+
+```js
+class RBT {
+  constructor() {
+    this.root = null;
+    this.size = 0;
+  }
+  /* 左旋转： */
+  rotateLeft(Father) {
+    let rightSon = Father.right;
+    Father.right = rightSon.left;
+    rightSon.left = Father;
+    // rightSon.color = Father.color;
+    // Father.color = RED;
+  }
+  /* 右旋转： */
+  rotateRight(Father) {
+    let leftSon = Father.left;
+    Father.left = leftSon.right;
+    leftSon.right = Father;
+    // leftSon.color = Father.color;
+    // Father.color = RED;
+  }
+}
+```

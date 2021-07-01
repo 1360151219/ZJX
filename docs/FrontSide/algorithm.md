@@ -47,6 +47,83 @@ var isPalindrome = function (head) {
 };
 ```
 
+### 剑指 24.反转链表
+
+> 思路：利用前中后 3 个指针，边遍历边反转。
+
+**代码实现:**
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function (head) {
+  let pre = null;
+  let current = head;
+  if (!head) return head;
+  let ahead = head.next;
+  while (current) {
+    current.next = pre;
+    pre = current;
+    current = ahead;
+    if (ahead) {
+      ahead = ahead.next;
+    }
+  }
+  return pre;
+};
+```
+
+### leetcode21.合并两顺序表
+
+> 思路：主要思路如下图。这里我第一次出错的原因是循坏条件判断错误，我用的是`l1||l2`，企图想一次性把所有条件都写在一起，这样的话`l1.val`可能为空，则出错。第 2 次的话，是遍历的错误，我写成了`l=l1` / `l=l2` ，这样的话 l 根本就没有 next，整个链表就支零破碎了。
+
+![](imgs/algorithm1.jpg)
+
+**代码实现：**
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var mergeTwoLists = function (l1, l2) {
+  if (l1 === null) return l2;
+  if (l2 === null) return l1;
+  let head = new ListNode(-1);
+  let l = head;
+  while (l1 != null && l2 != null) {
+    if (l1.val > l2.val) {
+      l.next = l2;
+      l2 = l2.next;
+    } else {
+      l.next = l1;
+      l1 = l1.next;
+    }
+    l = l.next;
+  }
+  if (l1 === null) l.next = l2;
+  if (l2 === null) l.next = l1;
+  return head.next;
+};
+```
+
 ## 字符串
 
 ### leetcode125. 验证回文串
@@ -78,4 +155,8 @@ var isPalindrome = function (s) {
   }
   return true;
 };
+```
+
+```
+
 ```
