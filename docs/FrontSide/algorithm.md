@@ -124,6 +124,49 @@ var mergeTwoLists = function (l1, l2) {
 };
 ```
 
+### 剑指 offer 22. 链表第 n 个节点
+
+- 输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。
+
+实例：
+
+```
+给定一个链表: 1->2->3->4->5, 和 k = 2.
+
+返回链表 4->5.
+```
+
+> 思路：首先遍历一遍链表，获取链表长度 n，然后重新遍历 n-k 次得到倒数第 k 个节点
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @param {number} k
+ * @return {ListNode}
+ */
+var getKthFromEnd = function (head, k) {
+  if (!head.next) return head;
+  let traverse = head;
+  let length = 1;
+  while (traverse.next) {
+    traverse = traverse.next;
+    length++;
+  }
+  if (k === 1) return traverse;
+  for (let i = 0; i < length - k; i++) {
+    head = head.next;
+  }
+  return head;
+};
+```
+
 ## 字符串
 
 ### leetcode125. 验证回文串

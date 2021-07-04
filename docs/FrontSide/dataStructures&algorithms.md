@@ -1274,16 +1274,60 @@ class RBT {
     let rightSon = Father.right;
     Father.right = rightSon.left;
     rightSon.left = Father;
-    // rightSon.color = Father.color;
-    // Father.color = RED;
+    rightSon.color = Father.color;
+    Father.color = RED;
   }
   /* 右旋转： */
   rotateRight(Father) {
     let leftSon = Father.left;
     Father.left = leftSon.right;
     leftSon.right = Father;
-    // leftSon.color = Father.color;
-    // Father.color = RED;
+    leftSon.color = Father.color;
+    Father.color = RED;
+  }
+  // 颜色翻转
+  flipColors(node) {
+    node.color = RED;
+    node.left.color = BLACK;
+    node.right.color = BLACK;
+  }
+  /* 插入节点 */
+  add(key) {
+    this.root = this.addRoot(this.root, key);
+    this.root.color = BLACK; // 根节点始终是黑色
+  }
+  addRoot(node, key) {
+    if (!node) {
+      this.size++;
+      return new BRNode(key);
+    }
+    if (key < node.key) {
+      node.left = this.addRoot(node.left, key);
+    } else if (key > node.key) {
+      node.right = this.addRoot(node.right, key);
+    } else {
+      node.key = key;
+    }
+    /* 情况5 */
+    if (this.isRed(node.right) && !this.isRed(node.left)) {
+      node = this.rotateLeft(node);
+      /* node就等于新节点即旋转上来的节点（新的父节点） */
+    }
+    /* 情况4 */
+    if (this.isRed(node.left) && this.isRed(node.left.left)) {
+      node = this.rotateRight(node);
+    }
+    /* 情况3 */
+    if (
+      this.isRed(node.right) &&
+      this.isRed(node.left) &&
+      (this.isRed(node.left.left) || this.isRed(node.right.right))
+    ) {
+      this.flipColors(node);
+    }
+    return node;
   }
 }
 ```
+
+> 这里的代码有点 BUG。实在是写不出来了哈哈~
