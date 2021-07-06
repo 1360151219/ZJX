@@ -1491,22 +1491,22 @@ export default class Graph {
 
 ```js
 // 初始化顶点的颜色
-_initializeColor() {
-    let colors = []
+_initialize() {
+    let visits = []
     for (let i = 0; i < this.vertexes.length; i++) {
-        colors[this.vertexes[i]] = 'white'
+        visits[this.vertexes[i]] = false
     }
-    return colors
+    return visits
 }
 
 // 广度优先搜索
 bfs(v, handle) {
     /* 初始化 */
-    let colors = this._initializeColor()
+    let visits = this._initialize()
     let queue = new Queue()
     queue.enqueue(v)
     /* 加入队列中即变成灰色 */
-    colors[v] = 'grey'
+    visits[v] = true
     while (!queue.isEmpty()) {
         let vertex = queue.dequeue()
         let borders = this.adjList.get(vertex)
@@ -1514,14 +1514,42 @@ bfs(v, handle) {
         for (let i = 0; i < borders.length; i++) {
             let b = borders[i]
             /* 判断之前有没有加入过 */
-            if (colors[b] === 'white') {
-                colors[b] = 'grey'
+            if (visits[b] === false) {
+                visits[b] = true
                 queue.enqueue(b)
             }
         }
         /* 访问取出的节点 */
         handle(vertex)
-        colors[vertex] = 'black'
+    }
+}
+```
+
+#### 深度优先搜索
+
+深度优先搜索的话，非常类似二叉树中的先序遍历。因此我们还是使用递归进行遍历。
+
+![](imgs/graph8.jpg)
+
+**代码实现：**
+
+```js
+// 深度优先搜索
+dfs(v, handle) {
+    let visits = this._initialize()
+    this._dfsVisit(v, visits, handle)
+}
+// dfs的递归方法  这里直接使用函数的调用栈
+_dfsVisit(v, visits, handle) {
+    handle(v) //访问 v
+    visits[v] = true
+    let borders = this.adjList.get(v)
+    for (let i = 0; i < borders.length; i++) {
+        let b = borders[i]
+        /* 判断之前有没有加入过 */
+        if (visits[b] === false) {
+            this._dfsVisit(b, visits, handle)
+        }
     }
 }
 ```
