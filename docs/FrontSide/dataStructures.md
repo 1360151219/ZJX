@@ -223,6 +223,55 @@ export class PriorityQueue extends Queue {
 
 ![数组、栈和队列图解](https://cdn.jsdelivr.net/gh/XPoet/image-hosting@master/JavaScript-数据结构与算法/image.64kg5ej56vk0.png)
 
+## 字典
+
+---
+
+字典存储的是键值对，这个就非常简单了，我们来直接用代码实现吧。
+
+```js
+// 字典结构的封装
+export default class Map {
+  constructor() {
+    this.items = {};
+  }
+  // has(key) 判断字典中是否存在某个 key
+  has(key) {
+    return this.items.hasOwnProperty(key);
+  }
+  // set(key, value) 在字典中添加键值对
+  set(key, value) {
+    this.items[key] = value;
+  }
+  // remove(key) 在字典中删除指定的 key
+  remove(key) {
+    // 如果集合不存在该 key，返回 false
+    if (!this.has(key)) return false;
+    delete this.items[key];
+  }
+  // get(key) 获取指定 key 的 value，如果没有，返回 undefined
+  get(key) {
+    return this.has(key) ? this.items[key] : undefined;
+  }
+  // 获取所有的 key
+  keys() {
+    return Object.keys(this.items);
+  }
+  // 获取所有的 value
+  values() {
+    return Object.values(this.items);
+  }
+  // size() 获取字典中的键值对个数
+  size() {
+    return this.keys().length;
+  }
+  // clear() 清空字典中所有的键值对
+  clear() {
+    this.items = {};
+  }
+}
+```
+
 ## 链表
 
 ---
@@ -1331,3 +1380,148 @@ class RBT {
 ```
 
 > 这里的代码有点 BUG。实在是写不出来了哈哈~
+
+## 图 Graph
+
+---
+
+图是由顶点的有穷非空集合和顶点之间边的集合构成的一种结构。它不像线性表和树的数据元素有着明显的关系一样，图的数据元素是可以杂乱无章的，是多对多的。
+
+![](imgs/graph1.jpg)
+
+**注意，图是不能为空的，不允许没有顶点**
+
+### 图的术语
+
+- **顶点 Vertex**：图中的一个个数据元素。
+- **边** ：顶点之间的关系。
+- **有向图\*\***和无向图\*\*：
+
+![](imgs/graph2.jpg)
+
+其中，有向图中，A->D 就是一条**有向边**，称作**弧**，我们可以用`<A,D>`来表示，A D 顺序不能换；无向边的话，我们可以用`(A,D)`或者`(D,A)`来表示
+
+- **简单图**：不存在顶点到自身的边，且同一条边不会重复出现。
+- **无向完全图**：无向图中任意两点之间都存在边。此时边的数量一共是 `n(n-1)/2`
+  ![](imgs/graph3.jpg)
+
+- **有向完全图**: 有向图中任意两点间都存在正反的两条弧。此时边数量为 `n(n-1)`
+
+- 稀疏图和稠密图
+
+- **权**
+  在图中，我们考虑实际情况，每条边的距离或者耗费都是不一样的，我们给每条边一个相关数，称为**权**。带权图我们称为 **网**。
+
+- 子图
+
+- **度**：我们可以类比树，即一个顶点通过边相连其他顶点的数量。度分为**入度**以及**出度**。
+- 路径。**回路**：第一个顶点与最后一个顶点相同的路径称为回路。
+
+### 图的表示方法
+
+- **邻接矩阵**
+
+![](imgs/graph4.jpg)
+
+我们用一个二维数组来表示图结构，0 代表无边，1 代表有边，这里是一个无向图，所以矩阵关于主对角线对称。对于带权图，我们可以把 1 换成权重。
+
+> 邻接矩阵最大的问题，就是如果是一个稀疏图的话，就会有很多的 0，浪费很多内存空间
+
+- **邻接表**
+  ![](imgs/graph5.jpg)
+
+这里跟哈希表很相似。对于带权图，我们可以在每个表结点处增加一个权重的数据。
+
+> 我们很容易的就可以获取每个顶点的出度，但是要获取入度的话就非常困难了。为此我们可以用逆邻接表。
+
+那么下面我们以邻接表的形式用代码实现一下图结构 (以无向图为例子,下面的字典是上述我实现过的结构，用于存储键值对)：
+
+```js
+export default class Graph {
+    constructor() {
+        this.vertexes = []    // 存储顶点
+        this.adjList = new Dictionay()   //存储边信息
+    }
+    // 添加顶点
+    addVertex(val) {
+        this.vertexes.push(val)
+        this.adjList.set(val, [])
+    }
+
+    // 添加边
+    addEdge(val1, val2) {
+        /* 无向图 */
+        this.adjList.get(val1).push(val2)
+        this.adjList.get(val2).push(val1)
+    }
+
+    // 输出图结构
+    toString() {
+        let str = ''
+        for (let i = 0; i < this.vertexes.length; i++) {
+            str += this.vertexes[i] + '-->'
+            let edges = this.adjList.get(this.vertexes[i])
+            for (let j = 0; j < edges.length; j++) {
+                str += edges[j] + ' '
+            }
+            str += '\n'
+        }
+        return str
+    }
+```
+
+### 图的遍历
+
+这里我们来讲 2 个非常非常重要的图的遍历方法。
+
+- 广度优先搜索 (Breadth-first Search)
+- 深度优先搜索 (Depth-first Search)
+
+#### 广度优先搜索
+
+顾名思义，就是先往一个顶点的周围顶点进行搜索，再搜索周围顶点的周围顶点。可能说的比较绕口，我们以下面的例子来看看：
+
+![](imgs/graph7.jpg)
+
+那么代码实现又如何呢？我们可以利用队列来实现，如下面的例子：
+
+![](imgs/graph6.jpg)
+
+**代码实现**
+
+```js
+// 初始化顶点的颜色
+_initializeColor() {
+    let colors = []
+    for (let i = 0; i < this.vertexes.length; i++) {
+        colors[this.vertexes[i]] = 'white'
+    }
+    return colors
+}
+
+// 广度优先搜索
+bfs(v, handle) {
+    /* 初始化 */
+    let colors = this._initializeColor()
+    let queue = new Queue()
+    queue.enqueue(v)
+    /* 加入队列中即变成灰色 */
+    colors[v] = 'grey'
+    while (!queue.isEmpty()) {
+        let vertex = queue.dequeue()
+        let borders = this.adjList.get(vertex)
+        /* 取相邻顶点加入到队列中 */
+        for (let i = 0; i < borders.length; i++) {
+            let b = borders[i]
+            /* 判断之前有没有加入过 */
+            if (colors[b] === 'white') {
+                colors[b] = 'grey'
+                queue.enqueue(b)
+            }
+        }
+        /* 访问取出的节点 */
+        handle(vertex)
+        colors[vertex] = 'black'
+    }
+}
+```

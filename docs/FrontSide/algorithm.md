@@ -160,11 +160,193 @@ var getKthFromEnd = function (head, k) {
     length++;
   }
   if (k === 1) return traverse;
+  if (k > length) return null;
   for (let i = 0; i < length - k; i++) {
     head = head.next;
   }
   return head;
 };
+```
+
+---
+
+**二刷**
+
+> 思路：上述的做法实际上遍历了 2 次链表，感觉还可以再优化一下。看了一下各路大佬的题解，发现一种快慢指针法只需要遍历一次链表即可。关键是让快指针先移动 k-1 步，这样的话快慢指针就分别指向所求链表的尾、头节点了。
+
+```js
+var getKthFromEnd = function (head, k) {
+  if (!head) return null;
+  let fast = head;
+  let slow = head;
+  for (let i = 0; i < k - 1; i++) {
+    if (!fast) return null; /* 即 k 大于链表的长度 */
+    fast = fast.next;
+  }
+  while (fast.next) {
+    slow = slow.next;
+    fast = fast.next;
+  }
+  return slow;
+};
+```
+
+### leetcode 146. LRU 缓存机制
+
+> 思路：这道题我们首先要想到，新的在前，旧的在后，若超出存贮极限，则把最旧的给抛弃掉。除此之外，当每次插入、更新或者获取节点的时候，都得把节点放在最前面也就是从旧变新了。因此我们可以定义几个方法：`_moveToHead`,`_remove`,`_isFull`。**`get方法`**：若 key 不存在 return -1；若存在则获取 value 并且 moveToHead。**`put`**：key 存在，则更新 value 并且 moveToHead；key 不存在，判断是否满了，若满了则删除尾节点；然后插入新节点。
+
+> 这道题最难的地方，我认为在于时间复杂度需要 O(1)。存储节点我们首先想到的就是数组或者链表，但是当我们插入删除以及获取的时候，它们都不可避免的需要 0(n)。因此，我选择使用链表来执行插入删除，使用哈希表来获取，这样的话时间复杂度就都满足 0(1)了。hashMap 存储的是 key->node，链表存储的是 node。
+
+```js
+//第一次：
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.data = value;
+    this.next = null;
+    this.prev = null;
+  }
+}
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.usedSpace = 0;
+    this.head = new Node(null, null);
+    this.tail = new Node(null, null);
+    this.head.next = this.tail;
+    this.tail.prev = this.head;
+    this.hashmap = {};
+  }
+  _isFull() {
+    return this.usedSpace == this.capacity ? true : false;
+  }
+  _remove(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.next = null;
+    node.prev = null;
+    return node;
+  }
+  _moveToHead(node) {
+    let current = this.head;
+    this.head = node;
+    node.next = current;
+    current.prev = node;
+  }
+  get(key) {
+    if (key in this.hashmap) {
+      let node = this._remove(this.hashmap[key]);
+      this._moveToHead(node);
+      return node.value;
+    } else {
+      return -1;
+    }
+  }
+  put(key, value) {
+    //
+    if (!this.hashmap[key]) {
+      let newNode = new Node(key, value);
+      if (!this._isFull()) {
+        this._moveToHead(newNode);
+        this.hashmap[key] = newNode;
+        this.usedSpace++;
+      } else {
+        delete this.hashmap[this.tail.key];
+        this.hashmap[key] = newNode;
+        this.tail = this.tail.prev;
+        this.tail.next = null;
+        this._moveToHead(newNode);
+      }
+    } else {
+      this.hashmap[key].value = value;
+      let node = this._remove(this.hashmap[key]);
+      this._moveToHead(node);
+    }
+  }
+}
+```
+
+**那么众所周知第一次往往都会失败，原因有 2 个：**
+
+- 首先节点类的 value 写错成了 data (这个写错的地方花了我好久才发现)
+- remove 方法中，如果删除的是尾节点的话则没有 node.next.prev，会报错
+
+因此我采用两个固定的 dummyHead 以及 dummyTail 来记录下虚拟头尾节点
+
+![](imgs/algorithm2.jpg)
+代码如下：
+
+```js
+class DoubleLinkedListNode {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.prev = null;
+    this.next = null;
+  }
+}
+class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.usedSpace = 0;
+    this.hashmap = {};
+    this.dummyHead = new DoubleLinkedListNode(null, null);
+    this.dummyTail = new DoubleLinkedListNode(null, null);
+    this.dummyHead.next = this.dummyTail;
+    this.dummyTail.prev = this.dummyHead;
+  }
+  _isFull() {
+    return this.usedSpace === this.capacity;
+  }
+  _remove(node) {
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.prev = null;
+    node.next = null;
+    return node;
+  }
+  _moveToHead(node) {
+    const head = this.dummyHead.next;
+    node.next = head;
+    head.prev = node;
+    node.prev = this.dummyHead;
+    this.dummyHead.next = node;
+  }
+  get(key) {
+    if (key in this.hashmap) {
+      const node = this.hashmap[key];
+      this._moveToHead(this._remove(node));
+      return node.value;
+      /* let node = this._remove(this.hashmap[key])
+            this._moveToHead(node)
+            return node.value */
+    } else {
+      return -1;
+    }
+  }
+
+  put(key, value) {
+    if (key in this.hashmap) {
+      const node = this.hashmap[key];
+      node.value = value;
+      this._moveToHead(this._remove(node));
+      /* this.hashmap[key].value = value
+            let node = this._remove(this.hashmap[key])
+            this._moveToHead(node) */
+    } else {
+      if (this._isFull()) {
+        const node = this.dummyTail.prev;
+        delete this.hashmap[node.key];
+        this._remove(node);
+        this.usedSpace--;
+      }
+      const newNode = new DoubleLinkedListNode(key, value);
+      this.hashmap[key] = newNode;
+      this._moveToHead(newNode);
+      this.usedSpace++;
+    }
+  }
+}
 ```
 
 ## 字符串
