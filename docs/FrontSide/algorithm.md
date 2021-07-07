@@ -191,6 +191,32 @@ var getKthFromEnd = function (head, k) {
 };
 ```
 
+### leetcode 876. 求链表的中间节点
+
+给定一个头结点为 head 的非空单链表，返回链表的中间结点。如果有两个中间结点，则返回第二个中间结点。
+
+> 思路：因为之前刷过快慢指针的题，所以我一看到要获取中间节点，我一下子就想到了快慢指针。
+
+**代码如下：**
+
+```js
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var middleNode = function (head) {
+  if (!head.next) return head;
+  let slow = head;
+  let fast = head;
+  /* 兼容奇数和偶数长度的链表 */
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  return slow;
+};
+```
+
 ### leetcode 146. LRU 缓存机制
 
 > 思路：这道题我们首先要想到，新的在前，旧的在后，若超出存贮极限，则把最旧的给抛弃掉。除此之外，当每次插入、更新或者获取节点的时候，都得把节点放在最前面也就是从旧变新了。因此我们可以定义几个方法：`_moveToHead`,`_remove`,`_isFull`。**`get方法`**：若 key 不存在 return -1；若存在则获取 value 并且 moveToHead。**`put`**：key 存在，则更新 value 并且 moveToHead；key 不存在，判断是否满了，若满了则删除尾节点；然后插入新节点。
@@ -347,6 +373,75 @@ class LRUCache {
     }
   }
 }
+```
+
+### leetcode 141. 判断链表是否有环
+
+如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
+
+如果链表中存在环，则返回 true 。 否则，返回 false 。
+
+**进阶：使用 O(1)内存解决该问题**
+
+> 思路：第一次做的时候，我首先想到的是遍历链表，遍历的过程中用哈希表来存储链表，并且判断目前节点是否在哈希表中存在，若存在则代表有环，不存在则没有环，返回 false
+
+**代码实现**
+
+```js
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function (head) {
+  let pos = -1;
+  let index = 0;
+  let current = head;
+  let hashMap = {};
+  while (current) {
+    for (let key in hashMap) {
+      if (hashMap[key] === current) {
+        pos = key;
+        return true;
+      }
+    }
+    hashMap[index] = current;
+    current = current.next;
+    index++;
+  }
+  return false;
+};
+```
+
+这种方法，**时间复杂度**以及**空间复杂度**都为 **O(n)**,要完成进阶的要求的话，我在题解看到一种很有趣的方法：**快慢指针**
+即快指针要是能追上慢指针，就可以知道链表中存在环，是不是特别神奇呢。
+
+**代码实现**
+
+```js
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function (head) {
+  let pos = -1;
+  let index = 0;
+  let slow = head;
+  /* 当传入空链表的时候 */
+  if (!slow) return false;
+  let fast = head.next;
+  /* 当只有一个节点的时候 */
+  if (!fast) return false;
+  while (slow != fast) {
+    if (!fast || !fast.next) {
+      return false;
+    }
+    fast = fast.next.next;
+    slow = slow.next;
+    index++;
+  }
+  pos = index;
+  return true;
+};
 ```
 
 ## 字符串

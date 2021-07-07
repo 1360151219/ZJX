@@ -1553,3 +1553,47 @@ _dfsVisit(v, visits, handle) {
     }
 }
 ```
+
+## 排序算法
+
+---
+
+### 冒泡排序
+
+通过遍历，比较两两之间的大小，逐次把最大值都移到最后面，从而得到顺序。冒泡排序的时间复杂度是 **O(n^2)**
+
+```js
+function bubbleSort(arr) {
+  for (let j = arr.length - 1; j >= 0; j--) {
+    for (let i = 0; i < j; i++) {
+      if (arr[i] > arr[i + 1]) {
+        let temp = arr[i + 1];
+        arr[i + 1] = arr[i];
+        arr[i] = temp;
+      }
+    }
+  }
+  return arr;
+}
+```
+
+### 选择排序
+
+顾名思义，逐次遍历数组找到最小值(或者最大值)然后放到最前面(最后面)。选择排序的时间复杂度是 **O(n^2)**，但是交换次数优化到了 O(n)
+
+```js
+function seletionSort(arr) {
+  for (let j = 0; j < arr.length - 1; j++) {
+    let min = j;
+    for (let i = j + 1; i < arr.length; i++) {
+      if (arr[min] > arr[i]) {
+        min = i;
+      }
+    }
+    let temp = arr[j];
+    arr[j] = arr[min];
+    arr[min] = temp;
+  }
+  return arr;
+}
+```
