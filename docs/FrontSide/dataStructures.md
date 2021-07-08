@@ -1597,3 +1597,128 @@ function seletionSort(arr) {
   return arr;
 }
 ```
+
+### 插入排序
+
+插入排序具体过程：取出并标记任一位元素，认为其左边的数据是**局部有序**，然后依次对左边数据进行比较，直至找到合适的位置。以此类推。
+
+```js
+function insertionSort(arr) {
+  for (let i = 1; i < arr.length; i++) {
+    /* 取出标记元素 */
+    let temp = arr[i];
+    let j = i;
+    /* 若左边数据大于标记元素数据，则右移 */
+    while (arr[j - 1] > temp && j > 0) {
+      arr[j] = arr[j - 1];
+      j--;
+    }
+    /* 找到合适的位置则放进去 */
+    arr[j] = temp;
+  }
+  return arr;
+}
+```
+
+> 插入排序的效率是以上三种最好的，它们比较以及换位置的最差情况次数都是 n(n-1)/2，即平均次数都是 n(n-1)/4。但是时间复杂度都是 O(n^2)。接下来我们来学习突破 O(n^2)复杂度的更好的排序算法吧！
+
+### 希尔排序
+
+希尔排序的算法是这样的：首先按照一定的间隔(增量)将数据分成若干组，然后组内进行插入排序。然后将间隔数缩小，重复操作，直至间隔为 1 的插入排序。
+
+一般的初次取序列的一半为增量，以后每次减半，直到增量为 1。
+
+![](imgs/shellSort.png)
+
+**代码实现：**
+
+```js
+function shellSort(arr) {
+  let length = arr.length;
+  let gap = Math.floor(length / 2);
+  /* 第一层循环，增量的缩小 */
+  while (gap >= 1) {
+    /* 第二层循环插入排序：取出标记元素 */
+    for (let i = gap; i < length; i++) {
+      let temp = arr[i];
+      let j = i;
+      /* 第三层循环插入排序：比较大小 */
+      while (arr[j - gap] > temp && j > gap - 1) {
+        arr[j] = arr[j - gap];
+        j -= gap;
+      }
+      arr[j] = temp;
+    }
+    gap = Math.floor(gap / 2);
+  }
+  return arr;
+}
+```
+
+希尔排序根据增量选取的不同，时间复杂度也会不一样，并且其时间复杂度非常难以计算。但是以上述的这种做法，其时间复杂度必然小于 O(n^2),
+突破了以前认为排序算法不可能突破 O(n^2)的思维束缚。
+
+### 快速排序
+
+快速排序几乎是所有排序算法中，最快速的，最好的算法了。它被称为 20 世纪十大算法之一，其平均时间复杂度可达到 O(n\*logn)。
+其思路是：首先选择一个中枢数据，然后将其他所有小于中枢的数据排在左边，所有大于中枢的数据排在后边，然后分而治之，再对左右两边的数据进行同样的操作，以此类推。
+
+那么应该怎么选择中枢会让快速排序的效率最高呢？一般用数据的头尾中 3 个数据中的中位数作为中枢数据。
+
+```js
+function getPivot(arr, left, right) {
+  let center = Math.floor((left + right) / 2);
+  /* 然后这3个数据进行一个排序，最后把中枢放在倒数第二位 */
+  if (arr[left] > arr[center]) {
+    let temp = arr[left];
+    arr[left] = arr[center];
+    arr[center] = temp;
+  }
+  if (arr[left] > arr[right]) {
+    let temp = arr[left];
+    arr[left] = arr[right];
+    arr[right] = temp;
+  }
+  if (arr[center] > arr[right]) {
+    let temp = arr[center];
+    arr[center] = arr[right];
+    arr[right] = temp;
+  }
+  let t = arr[center];
+  arr[center] = arr[right - 1];
+  arr[right - 1] = t;
+  return arr[right - 1];
+}
+/* 主函数 */
+function quickSort(arr) {
+  quick(arr, 0, arr.length - 1);
+  return arr;
+}
+function quick(arr, left, right) {
+  /* 结束条件 */
+  if (left >= right) return;
+  let pivot = getPivot(arr, left, right);
+  /* 记录左右指针的位置 */
+  let i = left;
+  let j = right - 1;
+  while (i < j) {
+    while (arr[++i] < pivot) {}
+    while (arr[--j] > pivot) {}
+    if (i < j) {
+      let temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+  /* 将大的数和中枢交换位置 ,即现在中枢的位置是正确的：i*/
+  let t = arr[i];
+  arr[i] = arr[right - 1];
+  arr[right - 1] = t;
+  /* 分而治之 */
+  quick(arr, left, i - 1);
+  quick(arr, i + 1, right);
+}
+```
+
+原理图如下：
+![](imgs/quickSort.jpg)
