@@ -2,7 +2,7 @@
 
 ---
 
-现在是 2021 的 7 月份初，我刚好大二结束了。为了想在大三可以通过自己的努力去大厂实习，除了学习前端知识外，还得补补一些计算机基础知识：数据结构以及算法。因此我决定开始每日至少刷一道 leetcode 题。以前的我是非常讨厌做算法题的，因为我很菜~~但是希望能通过努力来弥补这一点。奥里给~~
+现在是 2021 的 7 月份初，我刚好大二结束了。为了想在大三可以通过自己的努力去大厂实习，除了学习前端知识外，还得补补一些计算机基础知识：数据结构以及算法。因此我决定开始每日至少刷一道 leetcode 题。以前的我是非常讨厌做算法题的，因为我很菜 但是希望能通过努力来弥补这一点。奥里给~~
 
 ## 链表
 
@@ -126,7 +126,7 @@ var mergeTwoLists = function (l1, l2) {
 };
 ```
 
-### 剑指 offer 22. 链表第 n 个节点 2021.7.5
+### 剑指 offer 22. 链表第 n 个节点 `2021.7.5`
 
 - 输入一个链表，输出该链表中倒数第 k 个节点。为了符合大多数人的习惯，本题从 1 开始计数，即链表的尾节点是倒数第 1 个节点。
 
@@ -193,7 +193,7 @@ var getKthFromEnd = function (head, k) {
 };
 ```
 
-### leetcode 876. 求链表的中间节点 2021.7.6
+### leetcode 876. 求链表的中间节点 `2021.7.6`
 
 给定一个头结点为 head 的非空单链表，返回链表的中间结点。如果有两个中间结点，则返回第二个中间结点。
 
@@ -219,7 +219,7 @@ var middleNode = function (head) {
 };
 ```
 
-### leetcode 146. LRU 缓存机制 2021.7.7
+### leetcode 146. LRU 缓存机制 `2021.7.7`
 
 > 思路：这道题我们首先要想到，新的在前，旧的在后，若超出存贮极限，则把最旧的给抛弃掉。除此之外，当每次插入、更新或者获取节点的时候，都得把节点放在最前面也就是从旧变新了。因此我们可以定义几个方法：`_moveToHead`,`_remove`,`_isFull`。**`get方法`**：若 key 不存在 return -1；若存在则获取 value 并且 moveToHead。**`put`**：key 存在，则更新 value 并且 moveToHead；key 不存在，判断是否满了，若满了则删除尾节点；然后插入新节点。
 
@@ -377,7 +377,7 @@ class LRUCache {
 }
 ```
 
-### leetcode 141. 判断链表是否有环 2021.7.7
+### leetcode 141. 判断链表是否有环 `2021.7.7`
 
 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
 
@@ -446,7 +446,7 @@ var hasCycle = function (head) {
 };
 ```
 
-### leetcode 19. 删除倒数第 n 个节点 2021.7.8
+### leetcode 19. 删除倒数第 n 个节点 `2021.7.8`
 
 > 解题思路:看到这道题的第一反应我想到的就是快慢指针，可是我一开始写的代码发现当传入的节点只有 1 个的时候，无法删除 head。
 > 第一次的代码是这样的：
@@ -497,6 +497,79 @@ if (!head) return head
 };
 ```
 
+### leetcode 2.两数相加
+
+给你两个   非空 的链表，表示两个非负的整数。它们每位数字都是按照   逆序   的方式存储的，并且每个节点只能存储   一位   数字.请你将两个数相加，并以相同形式返回一个表示和的链表。
+你可以假设除了数字 0 之外，这两个数都不会以 0  开头。
+
+> 第一次：第一次见到这个题目，我首先想到的就是遍历两链表，然后几下其表示的两个数，然后相加，再把其转成数组再一个一个遍历转成新链表。
+
+```js
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var TenPowers = function (n) {
+  let res = 1;
+  for (let i = 0; i < n; i++) {
+    res *= 10;
+  }
+  return res;
+};
+var addTwoNumbers = function (l1, l2) {
+  let n = 0;
+  let r1 = 0;
+  let r2 = 0;
+  while (l1 || l2) {
+    if (l1) {
+      r1 += l1.val * TenPowers(n);
+      l1 = l1.next;
+    }
+    if (l2) {
+      r2 += l2.val * TenPowers(n);
+      l2 = l2.next;
+    }
+    n++;
+  }
+  r = r1 + r2;
+  let arr = String(r).split("");
+  let dummy = new ListNode(-1);
+  let current = dummy;
+  for (let i = arr.length - 1; i >= 0; i--) {
+    current.next = new ListNode(arr[i]);
+    current = current.next;
+  }
+  return dummy.next;
+};
+```
+
+> 果不其然，这种方法被[1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]教做人了。js 表示这个数字是 1e+30，所以在变成数组的时候，字母也进去了。最后看了一下评论，别人用小学数学的方式，一位位的相加，引入进位 carry 来表示进位。同时创建新链表，这样就可以避免超出精度的问题了。
+
+```js
+var addTwoNumbers = function (l1, l2) {
+  let carry = 0;
+  let dummy = new ListNode(0);
+  let current = dummy;
+  while (l1 || l2) {
+    let v1 = l1 ? l1.val : 0;
+    let v2 = l2 ? l2.val : 0;
+    let sum = v1 + v2 + carry;
+    carry = Math.floor(sum / 10);
+    let newNode = new ListNode(sum % 10);
+    current.next = newNode;
+    current = current.next;
+    if (l1) l1 = l1.next;
+    if (l2) l2 = l2.next;
+  }
+  /* 注意，这里最后的时候也要判断有没有进位 */
+  if (carry) {
+    current.next = new ListNode(carry);
+  }
+  return dummy.next;
+};
+```
+
 ## 字符串
 
 ### leetcode125. 验证回文串
@@ -532,4 +605,39 @@ var isPalindrome = function (s) {
 
 ```
 
+```
+
+## 贪心算法
+
+### leetcode 455. 分发饼干
+
+> 思路：要满足最大的条件，即需要将最小的饼干分给胃口最小的孩子，这样满足的孩子才能达到最大，即贪心算法。
+> 因此可以先把 2 个数组进行排序，再从小开始遍历。
+
+**代码实现：**
+
+```js
+/**
+ * @param {number[]} g
+ * @param {number[]} s
+ * @return {number}
+ */
+var findContentChildren = function (g, s) {
+  if (s.length === 0) return 0;
+  g.sort((i, j) => i - j);
+  s.sort((i, j) => i - j);
+  let count = 0;
+  for (let i = 0, j = 0; i < g.length && j < s.length; i++) {
+    while (g[i] > s[j] && j < s.length) {
+      j++;
+    }
+    /* 若j超出了界限 */
+    if (j >= s.length) return count;
+    /* 匹配成功 */
+    count++;
+    j++;
+  }
+  /* i超出了界限 */
+  return count;
+};
 ```
